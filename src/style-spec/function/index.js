@@ -136,13 +136,24 @@ function createFunction(parameters, propertySpec) {
             fun.isFeatureConstant = true;
             fun.isZoomConstant = false;
         } else {
-            fun = function(zoom, feature) {
-                const value = feature[parameters.property];
-                if (value === undefined) {
-                    return coalesce(parameters.default, propertySpec.default);
-                }
-                return outputFunction(innerFun(parameters, propertySpec, value, hashedStops, categoricalKeyType));
-            };
+            if (parameters.mdory) {
+                const fn = new Function(['feature'], `return (${parameters.mdory});`);
+                fun = function(zoom, feature) {
+                    const value = fn(feature);
+                    if (value === undefined || Number.isNaN(value)) {
+                        return coalesce(parameters.default, propertySpec.default);
+                    }
+                    return outputFunction(innerFun(parameters, propertySpec, value, hashedStops, categoricalKeyType));
+                };
+            } else {
+                fun = function(zoom, feature) {
+                    const value = feature[parameters.property];
+                    if (value === undefined) {
+                        return coalesce(parameters.default, propertySpec.default);
+                    }
+                    return outputFunction(innerFun(parameters, propertySpec, value, hashedStops, categoricalKeyType));
+                };
+            }
             fun.isFeatureConstant = false;
             fun.isZoomConstant = true;
         }
