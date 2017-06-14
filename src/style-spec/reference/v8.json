@@ -1624,6 +1624,10 @@
     "doc": "The geometry type for the filter to select."
   },
   "function": {
+    "mdory": {
+      "type": "string",
+      "doc": "a eval hack for mdory until https://github.com/mapbox/mapbox-gl-js/pull/4777"
+    },
     "stops": {
       "type": "array",
       "doc": "An array of stops.",

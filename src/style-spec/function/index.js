@@ -136,6 +136,16 @@ function createFunction(parameters, propertySpec) {
             fun.isFeatureConstant = true;
             fun.isZoomConstant = false;
         } else {
+            if (parameters.mdory) {
+                const fn = new Function(['feature'], 'return (' + parameters.mdory + ');');
+                fun = function(zoom, feature) {
+                    const value = fn(feature);
+                    if (value === undefined || value === NaN) {
+                        return coalesce(parameters.default, propertySpec.default);
+                    }
+                    return outputFunction(innerFun(parameters, propertySpec, value, hashedStops, categoricalKeyType));
+                };
+            } else {
             fun = function(zoom, feature) {
                 const value = feature[parameters.property];
                 if (value === undefined) {
@@ -143,6 +153,7 @@ function createFunction(parameters, propertySpec) {
                 }
                 return outputFunction(innerFun(parameters, propertySpec, value, hashedStops, categoricalKeyType));
             };
+            }
             fun.isFeatureConstant = false;
             fun.isZoomConstant = true;
         }
