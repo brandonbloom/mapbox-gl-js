@@ -1,7 +1,7 @@
 {
-  "name": "mapbox-gl",
+  "name": "mapbox-gl-mdory",
   "description": "A WebGL interactive maps library",
-  "version": "0.37.0",
+  "version": "0.37.2",
   "main": "dist/mapbox-gl.js",
   "license": "BSD-3-Clause",
   "repository": {
